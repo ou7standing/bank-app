@@ -33,21 +33,6 @@ public class AccountController {
         return accountService.deleteAccount (id);
     }
 
-    @PostMapping("/account/deposit")
-    public BalanceResponse deposit(long id, BigDecimal depositSum) throws Exception {
-        return accountService.deposit (id, depositSum);
-    }
-
-    @PostMapping("/account/withdrawal")
-    public BalanceResponse withdrawal(long id, BigDecimal withdrawalsum) throws Exception {
-        return accountService.withdrawal (id, withdrawalsum);
-    }
-
-    @PostMapping("account/transfer")
-    public BalanceResponse transfer(long idFromAcc, long idToAcc, BigDecimal transferSum) throws Exception {
-        return accountService.transferFunds (idFromAcc, idToAcc, transferSum);
-    }
-
 
 
 }

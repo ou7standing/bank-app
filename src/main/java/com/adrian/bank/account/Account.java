@@ -6,7 +6,8 @@ import java.math.BigDecimal;
 @Entity(name = "account")
 public class Account {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @SequenceGenerator(name = "mysequence", initialValue = 7)
+    @GeneratedValue(strategy = GenerationType.AUTO, generator="mysequence")
     private long id;
 
     @Column

@@ -26,21 +26,6 @@ public class AccountService {
     }
 
 
-    public BalanceResponse deposit(long id, BigDecimal depositAmount) throws Exception {
-        Account account = findAccount (id);
-        account.deposit (depositAmount);
-        accountRepository.save (account);
-        return new BalanceResponse (account.getBalance (), account.getCurrency ());
-    }
-
-
-    public BalanceResponse withdrawal(long id, BigDecimal withdrawalAmount) throws Exception {
-        Account account = findAccount (id);
-        account.withdrawal (withdrawalAmount);
-        accountRepository.save (account);
-        return new BalanceResponse (account.getBalance (), account.getCurrency ());
-    }
-
     public Account findAccount(long id) throws Exception {
         return accountRepository.findById (id).orElseThrow (() -> new Exception ("There's no such id"));
     }
@@ -56,19 +41,6 @@ public class AccountService {
     public String deleteAccount(long id) throws Exception {
         Account account = findAccount (id);
         accountRepository.delete (account);
-//        accounts.remove (account);
         return ("Account# " + id + " deleted successfully!");
     }
-
-    public BalanceResponse transferFunds(long idFromAcc, long idToAcc, BigDecimal transferSum) throws Exception {
-        if (!findAccount (idFromAcc).getCurrency ().equals (findAccount (idToAcc).getCurrency ())) {
-            throw new Exception ("Account id " + idFromAcc + " has different currency from account# " + idToAcc);
-        } else {
-            withdrawal (idFromAcc, transferSum);
-            return deposit (idToAcc, transferSum);
-        }
-
-
-    }
-
 }
