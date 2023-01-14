@@ -6,6 +6,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.math.BigDecimal;
+
 
 @RestController
 public class ExchangeController {
@@ -19,7 +21,7 @@ public class ExchangeController {
     }
 
     @PostMapping("account/exchange")
-    public BalanceResponse exchangeCurrency(double amount, long fromAccount, long toAccount) throws Exception {
+    public BalanceResponse exchangeCurrency(BigDecimal amount, long fromAccount, long toAccount) throws Exception {
         return exchangeService.exchangeCurrency (amount, fromAccount, toAccount);
     }
 

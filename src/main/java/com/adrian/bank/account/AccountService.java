@@ -3,6 +3,8 @@ package com.adrian.bank.account;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
+
 @Service
 public class AccountService {
 
@@ -11,7 +13,7 @@ public class AccountService {
     public AccountRepository accountRepository;
 
 
-    public Account createAccount(String name, double balance, Currency currency) {
+    public Account createAccount(String name, BigDecimal balance, Currency currency) {
         Account newAccount = new Account (balance, name, currency);
         accountRepository.save (newAccount);
         return newAccount;
@@ -24,7 +26,7 @@ public class AccountService {
     }
 
 
-    public BalanceResponse deposit(long id, double depositAmount) throws Exception {
+    public BalanceResponse deposit(long id, BigDecimal depositAmount) throws Exception {
         Account account = findAccount (id);
         account.deposit (depositAmount);
         accountRepository.save (account);
@@ -32,7 +34,7 @@ public class AccountService {
     }
 
 
-    public BalanceResponse withdrawal(long id, double withdrawalAmount) throws Exception {
+    public BalanceResponse withdrawal(long id, BigDecimal withdrawalAmount) throws Exception {
         Account account = findAccount (id);
         account.withdrawal (withdrawalAmount);
         accountRepository.save (account);
@@ -41,8 +43,6 @@ public class AccountService {
 
     public Account findAccount(long id) throws Exception {
         return accountRepository.findById (id).orElseThrow (() -> new Exception ("There's no such id"));
-
-        //        return accounts.stream ().filter (account -> account.getId () == id).findAny ().orElseThrow (() -> new Exception ("There's no such id"));
     }
 
 
@@ -60,7 +60,7 @@ public class AccountService {
         return ("Account# " + id + " deleted successfully!");
     }
 
-    public BalanceResponse transferFunds(long idFromAcc, long idToAcc, double transferSum) throws Exception {
+    public BalanceResponse transferFunds(long idFromAcc, long idToAcc, BigDecimal transferSum) throws Exception {
         if (!findAccount (idFromAcc).getCurrency ().equals (findAccount (idToAcc).getCurrency ())) {
             throw new Exception ("Account id " + idFromAcc + " has different currency from account# " + idToAcc);
         } else {

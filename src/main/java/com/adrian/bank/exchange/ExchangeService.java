@@ -76,114 +76,164 @@ public class ExchangeService {
         return rates;
     }
 
-    public BalanceResponse exchangeCurrency(double amount, long fromAccount, long toAccount) throws Exception {
+//    public BalanceResponse exchangeCurrency(double amount, long fromAccount, long toAccount) throws Exception {
+//
+//        Account giveTo = accountService.findAccount (toAccount);
+//
+//        if (accountService.findAccount (fromAccount).getCurrency ().equals (Currency.USD)) {
+//
+//            accountService.withdrawal (fromAccount, amount);
+//
+//            double rate = getPostsPlainJSONWithMap ().getData ().get (giveTo.getCurrency ().name ());
+//
+//            log.info (String.valueOf (rate));
+//
+//            double depositAmount = amount * rate;
+//
+//            BigDecimal depositAmountToBD = new BigDecimal (depositAmount).setScale (2, RoundingMode.HALF_UP);
+//
+//            depositAmount = depositAmountToBD.doubleValue ();
+//
+//            log.info (String.valueOf (depositAmount));
+//
+//            accountService.deposit (toAccount, depositAmount);
+//
+//            return new BalanceResponse (giveTo.getBalance (), giveTo.getCurrency ());
+//
+//        } else if ((!accountService.findAccount (fromAccount).getCurrency ().equals (Currency.USD)) &&
+//                (giveTo.getCurrency ().equals (Currency.USD))) {
+//
+//            accountService.withdrawal (fromAccount, amount);
+//
+//            Account takeFrom = accountService.findAccount (fromAccount);
+//
+//            double exchangeRate = getPostsPlainJSONWithMap ().getData ().get (takeFrom.getCurrency ().name ());
+//
+//            log.info (String.valueOf (exchangeRate));
+//
+//            double depositAmount = amount / exchangeRate;
+//
+//            BigDecimal depositAmountToBD = new BigDecimal (depositAmount).setScale (2, RoundingMode.HALF_UP);
+//
+//            depositAmount = depositAmountToBD.doubleValue ();
+//
+//            log.info (String.valueOf (depositAmount));
+//
+//            accountService.deposit (toAccount, depositAmount);
+//
+//            return new BalanceResponse (giveTo.getBalance (), giveTo.getCurrency ());
+//
+//
+//        } else if (accountService.findAccount (fromAccount).getCurrency ().equals (Currency.EUR)) {
+//            // tova oznachava, che giveTo accounta e v BGN, shtoto ako beshe v dolari gorniq sluchai
+//            // shteshe da go hvane
+//
+//            accountService.withdrawal (fromAccount, amount);
+//
+////            Account takeFrom = accountService.findAccount (fromAccount);
+//
+//            double usdEURExchangeRate = getPostsPlainJSONWithMap ().getData ().get (Currency.EUR.name ());
+//
+//            log.info (String.valueOf (usdEURExchangeRate));
+//
+//            double depositInUSD = amount / usdEURExchangeRate;
+//
+//            double usdBGNExchangeRate = getPostsPlainJSONWithMap ().getData ().get (Currency.BGN.name ());
+//
+//            double depositAmount = depositInUSD * usdBGNExchangeRate;
+//
+//            BigDecimal depositAmountToBD = new BigDecimal (depositAmount).setScale (2, RoundingMode.HALF_UP);
+//
+//            depositAmount = depositAmountToBD.doubleValue ();
+//
+//            log.info (String.valueOf (depositAmount));
+//
+//            accountService.deposit (toAccount, depositAmount);
+//
+//            return new BalanceResponse (giveTo.getBalance (), giveTo.getCurrency ());
+//
+//        } else if (accountService.findAccount (fromAccount).getCurrency ().equals (Currency.BGN)) {
+//            // tova oznachava, che giveTo accounta e v EUR, shtoto ako beshe v dolari vtoriq sluchai
+//            // shteshe da go hvane
+//
+//            accountService.withdrawal (fromAccount, amount);
+//
+////            Account takeFrom = accountService.findAccount (fromAccount);
+//
+//            double usdBGNExchangeRate = getPostsPlainJSONWithMap ().getData ().get (Currency.BGN.name ());
+//
+//            log.info (String.valueOf (usdBGNExchangeRate));
+//
+//            double depositInUSD = amount / usdBGNExchangeRate;
+//
+//            double usdEURExchangeRate = getPostsPlainJSONWithMap ().getData ().get (Currency.EUR.name ());
+//
+//            double depositAmount = depositInUSD * usdEURExchangeRate;
+//
+//            BigDecimal depositAmountToBD = new BigDecimal (depositAmount).setScale (2, RoundingMode.HALF_UP);
+//
+//            depositAmount = depositAmountToBD.doubleValue ();
+//
+//            log.info (String.valueOf (depositAmount));
+//
+//            accountService.deposit (toAccount, depositAmount);
+//
+//            return new BalanceResponse (giveTo.getBalance (), giveTo.getCurrency ());
+//
+//        }
+//        throw new Exception ("Accounts relationship not established");
+//
+//
+//    }
+
+
+    public BalanceResponse exchangeCurrency(BigDecimal amount, long fromAccount, long toAccount) throws Exception {
 
         Account giveTo = accountService.findAccount (toAccount);
 
-        if (accountService.findAccount (fromAccount).getCurrency ().equals (Currency.USD)) {
+        Account takeFrom = accountService.findAccount (fromAccount);
 
-            accountService.withdrawal (fromAccount, amount);
+        accountService.withdrawal (fromAccount, amount);
 
-            double rate = getPostsPlainJSONWithMap ().getData ().get (giveTo.getCurrency ().name ());
+        BigDecimal rate = getRate (takeFrom.getCurrency (), giveTo.getCurrency ()).setScale (4, RoundingMode.HALF_UP);
 
-            log.info (String.valueOf (rate));
+        log.info (String.valueOf (rate));
 
-            double depositAmount = amount * rate;
+        BigDecimal depositAmount = amount.multiply (rate).setScale (2, RoundingMode.HALF_UP);
 
-            BigDecimal depositAmountToBD = new BigDecimal (depositAmount).setScale (2, RoundingMode.HALF_UP);
+        log.info (String.valueOf (depositAmount));
 
-            depositAmount = depositAmountToBD.doubleValue ();
+        accountService.deposit (toAccount, depositAmount);
 
-            log.info (String.valueOf (depositAmount));
+        return new BalanceResponse (giveTo.getBalance (), giveTo.getCurrency ());
 
-            accountService.deposit (toAccount, depositAmount);
-
-            return new BalanceResponse (giveTo.getBalance (), giveTo.getCurrency ());
-
-        } else if ((!accountService.findAccount (fromAccount).getCurrency ().equals (Currency.USD)) &&
-                (giveTo.getCurrency ().equals (Currency.USD))) {
-
-            accountService.withdrawal (fromAccount, amount);
-
-            Account takeFrom = accountService.findAccount (fromAccount);
-
-            double exchangeRate = getPostsPlainJSONWithMap ().getData ().get (takeFrom.getCurrency ().name ());
-
-            log.info (String.valueOf (exchangeRate));
-
-            double depositAmount = amount / exchangeRate;
-
-            BigDecimal depositAmountToBD = new BigDecimal (depositAmount).setScale (2, RoundingMode.HALF_UP);
-
-            depositAmount = depositAmountToBD.doubleValue ();
-
-            log.info (String.valueOf (depositAmount));
-
-            accountService.deposit (toAccount, depositAmount);
-
-            return new BalanceResponse (giveTo.getBalance (), giveTo.getCurrency ());
+    }
 
 
-        } else if (accountService.findAccount (fromAccount).getCurrency ().equals (Currency.EUR)) {
-            // tova oznachava, che giveTo accounta e v BGN, shtoto ako beshe v dolari gorniq sluchai
-            // shteshe da go hvane
+    private BigDecimal getRate(Currency from, Currency to) throws Exception {
 
-            accountService.withdrawal (fromAccount, amount);
+        // TODO: 1/14/2023 izkarai getPostsPlainJSONWithMap da bude viknat samo 1 put i da e po -readable koda.
 
-//            Account takeFrom = accountService.findAccount (fromAccount);
-
-            double usdEURExchangeRate = getPostsPlainJSONWithMap ().getData ().get (Currency.EUR.name ());
-
-            log.info (String.valueOf (usdEURExchangeRate));
-
-            double depositInUSD = amount / usdEURExchangeRate;
-
-            double usdBGNExchangeRate = getPostsPlainJSONWithMap ().getData ().get (Currency.BGN.name ());
-
-            double depositAmount = depositInUSD * usdBGNExchangeRate;
-
-            BigDecimal depositAmountToBD = new BigDecimal (depositAmount).setScale (2, RoundingMode.HALF_UP);
-
-            depositAmount = depositAmountToBD.doubleValue ();
-
-            log.info (String.valueOf (depositAmount));
-
-            accountService.deposit (toAccount, depositAmount);
-
-            return new BalanceResponse (giveTo.getBalance (), giveTo.getCurrency ());
-
-        } else if (accountService.findAccount (fromAccount).getCurrency ().equals (Currency.BGN)) {
-            // tova oznachava, che giveTo accounta e v EUR, shtoto ako beshe v dolari vtoriq sluchai
-            // shteshe da go hvane
-
-            accountService.withdrawal (fromAccount, amount);
-
-//            Account takeFrom = accountService.findAccount (fromAccount);
-
-            double usdBGNExchangeRate = getPostsPlainJSONWithMap ().getData ().get (Currency.BGN.name ());
-
-            log.info (String.valueOf (usdBGNExchangeRate));
-
-            double depositInUSD = amount / usdBGNExchangeRate;
-
-            double usdEURExchangeRate = getPostsPlainJSONWithMap ().getData ().get (Currency.EUR.name ());
-
-            double depositAmount = depositInUSD * usdEURExchangeRate;
-
-            BigDecimal depositAmountToBD = new BigDecimal (depositAmount).setScale (2, RoundingMode.HALF_UP);
-
-            depositAmount = depositAmountToBD.doubleValue ();
-
-            log.info (String.valueOf (depositAmount));
-
-            accountService.deposit (toAccount, depositAmount);
-
-            return new BalanceResponse (giveTo.getBalance (), giveTo.getCurrency ());
-
+        if (from.equals (to)) {
+            throw new Exception ("Currencies are the same, go to 'transfer funds' to transfer funds between " +
+                    "accounts of same currency");
+        } else if (from.equals (Currency.USD)) {
+            return getPostsPlainJSONWithMap ().getData ().get (to.name ());
+        } else if (to.equals (Currency.USD)) {
+            BigDecimal exchangeRate = getPostsPlainJSONWithMap ().getData ().get (from.name ());
+            return BigDecimal.ONE.divide (exchangeRate, 4, RoundingMode.HALF_UP);
+        } else if (from.equals (Currency.EUR)) {
+            // tova ozn, che "to" = BGN, shtoto ako beshe v dolari gorniq sluchai shteshe da go hvane
+            BigDecimal usdEURExchangeRate = getPostsPlainJSONWithMap ().getData ().get (Currency.EUR.name ());
+            BigDecimal usdBGNExchangeRate = getPostsPlainJSONWithMap ().getData ().get (Currency.BGN.name ());
+            return usdBGNExchangeRate.divide (usdEURExchangeRate, 4, RoundingMode.HALF_UP);
+        } else if (from.equals (Currency.BGN)) {
+            // tova ozn, che "to" = EUR, shtoto ako beshe v dolari vtoriq sluchai shteshe da go hvane
+            BigDecimal usdEURExchangeRate = getPostsPlainJSONWithMap ().getData ().get (Currency.EUR.name ());
+            BigDecimal usdBGNExchangeRate = getPostsPlainJSONWithMap ().getData ().get (Currency.BGN.name ());
+            return usdEURExchangeRate.divide (usdBGNExchangeRate, 4, RoundingMode.HALF_UP);
         }
         throw new Exception ("Accounts relationship not established");
-
-
     }
 
 

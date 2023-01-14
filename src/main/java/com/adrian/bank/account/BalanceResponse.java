@@ -1,21 +1,23 @@
 package com.adrian.bank.account;
 
+import java.math.BigDecimal;
+
 public class BalanceResponse {
 
-    public double balance;
+    public BigDecimal balance;
     public Currency currency;
 
 
-    public BalanceResponse(double balance, Currency currency) {
+    public BalanceResponse(BigDecimal balance, Currency currency) {
         this.balance = balance;
         this.currency = currency;
     }
 
-    public double getBalance() {
+    public BigDecimal getBalance() {
         return balance;
     }
 
-    public void setBalance(double balance) {
+    public void setBalance(BigDecimal balance) {
         this.balance = balance;
     }
 
