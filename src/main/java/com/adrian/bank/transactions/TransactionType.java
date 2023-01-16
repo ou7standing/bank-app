@@ -10,5 +10,7 @@ public enum TransactionType {
 
     transfer,
 
-    exchangeCurrency;
+    exchangeCurrency,
+
+    accountDeletion;
 }

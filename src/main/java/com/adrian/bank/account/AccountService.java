@@ -13,9 +13,15 @@ public class AccountService {
     public AccountRepository accountRepository;
 
 
+//    TransactionService ts = new TransactionService ();
+
     public Account createAccount(String name, BigDecimal balance, Currency currency) {
         Account newAccount = new Account (balance, name, currency);
         accountRepository.save (newAccount);
+
+//        ts.createTransaction (newAccount.getId (), TransactionType.accountCreation,
+//                currency,currency,balance,BigDecimal.valueOf (1));
+
         return newAccount;
     }
 
@@ -40,6 +46,10 @@ public class AccountService {
 
     public String deleteAccount(long id) throws Exception {
         Account account = findAccount (id);
+
+//        ts.createTransaction (id, TransactionType.accountDeletion,
+//                account.getCurrency (),account.getCurrency (),account.getBalance (), BigDecimal.valueOf (1));
+
         accountRepository.delete (account);
         return ("Account# " + id + " deleted successfully!");
     }

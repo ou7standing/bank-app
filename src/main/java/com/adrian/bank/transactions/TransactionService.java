@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
+import java.util.Optional;
 
 
 @Service
@@ -101,12 +102,27 @@ public class TransactionService {
         Transaction transaction = createTransaction (fromAccount, TransactionType.exchangeCurrency, takeFrom.getCurrency (), giveTo.getCurrency ()
                 , amount, rate);
         long transID = transaction.getTransID ();
+
+        // tova trie prednite 2 transakcii, koito sa napraveni ot deposit i withdrawal metoda, predi da se stigne do
+        // tazi tranzakciq. Po tozi nachin ostava samo 1 tranzakciq ot operaciq
         transactionRepository.deleteById (transID - 2);
         transactionRepository.deleteById (transID - 1);
 
         return new BalanceResponse (giveTo.getBalance (), giveTo.getCurrency ());
 
     }
+
+    public Optional<Transaction> checkTransaction(long id) {
+        Optional<Transaction> transaction = transactionRepository.findById (id);
+        return transaction;
+    }
+
+
+//    public Transaction createTransFromPM() {
+//        deposit ();
+//
+//    }
+
 
 
 }
