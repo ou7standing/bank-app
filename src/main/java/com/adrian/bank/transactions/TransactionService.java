@@ -1,7 +1,7 @@
 package com.adrian.bank.transactions;
 
 import com.adrian.bank.account.Account;
-import com.adrian.bank.account.AccountRepository;
+import com.adrian.bank.account.AccountService;
 import com.adrian.bank.account.BalanceResponse;
 import com.adrian.bank.account.Currency;
 import com.adrian.bank.exchange.ExchangeService;
@@ -11,16 +11,14 @@ import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
-import java.util.Optional;
 
 
 @Service
 @Log4j2
 public class TransactionService {
 
-
     @Autowired
-    public AccountRepository accountRepository;
+    public AccountService accountService;
 
     @Autowired
     public ExchangeService exchangeService;
@@ -28,52 +26,47 @@ public class TransactionService {
     @Autowired
     public TransactionRepository transactionRepository;
 
-
-    public Account findAccount(long id) throws Exception {
-        return accountRepository.findById (id).orElseThrow (() -> new Exception ("There's no such id"));
-    }
-
     public Transaction createTransaction(long accountId, TransactionType type, Currency fromCurrency,
-                                         Currency toCurrency, BigDecimal transferSum,
-                                         BigDecimal exchangeRate) {
-        Transaction transaction = new Transaction (accountId, type, fromCurrency, toCurrency, transferSum,
-                exchangeRate);
+                                         Currency toCurrency, BigDecimal transferSum, BigDecimal exchangeRate) {
+        Transaction transaction = new Transaction (accountId, type, fromCurrency, toCurrency, transferSum, exchangeRate);
+        transaction.setStatus (TransactionStatus.successful);
         transactionRepository.save (transaction);
         return transaction;
     }
 
 
     public BalanceResponse deposit(long id, BigDecimal depositAmount) throws Exception {
-        Account account = findAccount (id);
+        Account account = accountService.findAccount (id);
         account.deposit (depositAmount);
-        accountRepository.save (account);
+        accountService.accountRepository.save (account);
 
-        createTransaction (id, TransactionType.deposit, findAccount (id).getCurrency (), findAccount (id).getCurrency ()
-                , depositAmount, BigDecimal.valueOf (1));
+        createTransaction (id, TransactionType.deposit, account.getCurrency (), account.getCurrency (),
+                depositAmount, BigDecimal.valueOf (1));
 
         return new BalanceResponse (account.getBalance (), account.getCurrency ());
     }
 
 
     public BalanceResponse withdrawal(long id, BigDecimal withdrawalAmount) throws Exception {
-        Account account = findAccount (id);
+        Account account = accountService.findAccount (id);
         account.withdrawal (withdrawalAmount);
-        accountRepository.save (account);
+        accountService.accountRepository.save (account);
 
-        createTransaction (id, TransactionType.withdrawal, findAccount (id).getCurrency (), findAccount (id).getCurrency ()
-                , withdrawalAmount, BigDecimal.valueOf (1));
+        createTransaction (id, TransactionType.withdrawal, account.getCurrency (), account.getCurrency (),
+                withdrawalAmount, BigDecimal.valueOf (1));
 
         return new BalanceResponse (account.getBalance (), account.getCurrency ());
     }
 
     public BalanceResponse transferFunds(long idFromAcc, long idToAcc, BigDecimal transferSum) throws Exception {
-        if (!findAccount (idFromAcc).getCurrency ().equals (findAccount (idToAcc).getCurrency ())) {
+        if (!accountService.findAccount (idFromAcc).getCurrency ().equals
+                (accountService.findAccount (idToAcc).getCurrency ())) {
             throw new Exception ("Account id " + idFromAcc + " has different currency from account# " + idToAcc);
         } else {
             withdrawal (idFromAcc, transferSum);
 
-            createTransaction (idFromAcc, TransactionType.transfer, findAccount (idFromAcc).getCurrency (), findAccount (idToAcc).getCurrency ()
-                    , transferSum, BigDecimal.valueOf (1));
+            createTransaction (idFromAcc, TransactionType.transfer, accountService.findAccount (idFromAcc).getCurrency (),
+                    accountService.findAccount (idToAcc).getCurrency (), transferSum, BigDecimal.valueOf (1));
 
             return deposit (idToAcc, transferSum);
         }
@@ -82,9 +75,9 @@ public class TransactionService {
 
     public BalanceResponse exchangeCurrency(BigDecimal amount, long fromAccount, long toAccount) throws Exception {
 
-        Account giveTo = findAccount (toAccount);
+        Account giveTo = accountService.findAccount (toAccount);
 
-        Account takeFrom = findAccount (fromAccount);
+        Account takeFrom = accountService.findAccount (fromAccount);
 
         // tva tree se pogledne, shtoto ako ima nqkakva greshka po-nadolu, shte wzeme edni pari samo
         withdrawal (fromAccount, amount);
@@ -99,8 +92,7 @@ public class TransactionService {
 
         deposit (toAccount, depositAmount);
 
-        Transaction transaction = createTransaction (fromAccount, TransactionType.exchangeCurrency, takeFrom.getCurrency (), giveTo.getCurrency ()
-                , amount, rate);
+        Transaction transaction = createTransaction (fromAccount, TransactionType.exchangeCurrency, takeFrom.getCurrency (), giveTo.getCurrency (), amount, rate);
         long transID = transaction.getTransID ();
 
         // tova trie prednite 2 transakcii, koito sa napraveni ot deposit i withdrawal metoda, predi da se stigne do
@@ -112,18 +104,16 @@ public class TransactionService {
 
     }
 
-    public Optional<Transaction> checkTransaction(long id) {
-        Optional<Transaction> transaction = transactionRepository.findById (id);
+    public Transaction checkTransaction(long id) throws Exception {
+        Transaction transaction = transactionRepository.findById (id).orElseThrow (() -> new Exception ("There's no" +
+                " such transaction ID"));
         return transaction;
     }
 
-
-//    public Transaction createTransFromPM() {
-//        deposit ();
-//
-//    }
-
-
+    public TransactionStatus checkStatus(long id) throws Exception {
+        TransactionStatus ts = checkTransaction (id).getStatus ();
+        return ts;
+    }
 
 }
 

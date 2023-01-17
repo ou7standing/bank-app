@@ -39,12 +39,16 @@ public class Transaction {
     @Column
     private BigDecimal finalSum;
 
+    @Enumerated(EnumType.STRING)
+    private TransactionStatus status;
+
+
     public Transaction() {
     }
 
     public Transaction(long accountId, TransactionType type, Currency fromCurrency, Currency toCurrency, BigDecimal sumRequest, BigDecimal exchangeRate) {
         this.accountId = accountId;
-        this.dateTime = Timestamp.valueOf (LocalDateTime.now());
+        this.dateTime = Timestamp.valueOf (LocalDateTime.now ());
         this.type = type;
         this.fromCurrency = fromCurrency;
         this.toCurrency = toCurrency;
@@ -125,7 +129,13 @@ public class Transaction {
         this.finalSum = finalSum;
     }
 
+    public TransactionStatus getStatus() {
+        return status;
+    }
 
+    public void setStatus(TransactionStatus status) {
+        this.status = status;
+    }
 }
 
 

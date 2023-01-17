@@ -31,7 +31,6 @@ public class Account {
     public Account(BigDecimal balance, String ownerName, Currency currency) {
         this.balance = balance;
         this.ownerName = ownerName;
-//        this.id = IdGenerator.returnNewID ();  // commented-out 11 Jan
         this.currency = currency;
     }
 

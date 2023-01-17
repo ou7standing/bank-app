@@ -1,9 +1,7 @@
 package com.adrian.bank.exchange;
 
-import com.adrian.bank.account.AccountService;
 import com.adrian.bank.account.Currency;
 import lombok.extern.log4j.Log4j2;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
@@ -17,8 +15,6 @@ import java.util.Map;
 
 public class ExchangeService {
     private RestTemplate restTemplate;
-    @Autowired
-    public AccountService accountService;
 
 
     public ExchangeService() {
@@ -74,7 +70,6 @@ public class ExchangeService {
         log.info (rates);
         return rates;
     }
-
 
 
     public BigDecimal getRate(Currency from, Currency to) throws Exception {

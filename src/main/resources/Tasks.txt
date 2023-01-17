@@ -35,3 +35,9 @@ hint - pogledni "date" kolona na tablicata v internet kak se pravi;
 accountID da e String, posle shte govorim za relation-i
 
 3. Zadacha - da se napravqt Get i Post methodi za Tranzakciite
+
+4. Handle exceptions - to be client friendly ( na postman-a da se pokazvat greshkite po-hubavo).
+
+    - add validations to parameters.
+
+    how to handle exceptions in Spring Boot.

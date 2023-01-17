@@ -7,7 +7,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.math.BigDecimal;
-import java.util.Optional;
 
 @RestController
 public class TransactionController {
@@ -38,8 +37,14 @@ public class TransactionController {
     }
 
     @GetMapping("transactions/check-transaction")
-    public Optional<Transaction> checkTransaction(long transID) {
+    public Transaction checkTransaction(long transID) throws Exception {
         return transactionService.checkTransaction (transID);
+    }
+
+
+    @PostMapping("transactions/check-status")
+    public TransactionStatus checkTransStatus(long transactionID) throws Exception {
+        return transactionService.checkStatus (transactionID);
     }
 
 
