@@ -13,6 +13,7 @@ public class Transaction {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
+    // TODO: 1/18/2023 samo id da se kazva, nyamash nujda ot dopulnitelno shum v imet 
     private long transID;
 
     @Basic

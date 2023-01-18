@@ -41,3 +41,15 @@ accountID da e String, posle shte govorim za relation-i
     - add validations to parameters.
 
     how to handle exceptions in Spring Boot.
+
+
+5. Overall tasks
+    - clean all code from imports, whitespaces, lines that are not useful
+
+    - vij kakvo pravi @RestController("/accounts") vmesto samo @RestController (pesti pisane na url ako imash mn endpointi)
+
+    - izchisti vsicki ostaveni komentari v koda
+
+    - razgledai kakvo prawi project lombok i zameni getterite i setterite v cyalata aplikacita
+        - https://www.baeldung.com/intro-to-project-lombok
+        - https://projectlombok.org/features/
