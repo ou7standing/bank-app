@@ -11,6 +11,7 @@ import java.util.Map;
 
 import static java.math.BigDecimal.ONE;
 import static java.math.RoundingMode.HALF_UP;
+import static java.util.Objects.isNull;
 
 @Service
 @Log4j2
@@ -79,6 +80,9 @@ public class ExchangeService {
 
         if (from.equals(to))
             throw new Exception("Cannot exchange identical currencies, use /transactions/transfer");
+
+        if (isNull(data.get(from)) || isNull(data.get(to)))
+            throw new Exception("Accounts relationship not established");
 
         if (from.equals(Currency.USD))
             return data.get(to.name());
