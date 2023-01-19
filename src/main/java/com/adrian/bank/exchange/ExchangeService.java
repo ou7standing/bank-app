@@ -7,8 +7,11 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
 import java.math.BigDecimal;
-import java.math.RoundingMode;
 import java.util.Map;
+
+import static java.math.BigDecimal.ONE;
+import static java.math.RoundingMode.HALF_UP;
+import static java.util.Objects.isNull;
 
 @Service
 @Log4j2
@@ -76,30 +79,26 @@ public class ExchangeService {
 
 
     public BigDecimal getRate(Currency from, Currency to) throws Exception {
+        Map<String, BigDecimal> data = getPostsPlainJSONWithMap().getData();
 
-        Map<String, BigDecimal> data = getPostsPlainJSONWithMap ().getData ();
+        if (from.equals(to))
+            throw new Exception("Cannot exchange identical currencies, use /transactions/transfer");
 
-        if (from.equals (to)) {
-            throw new Exception ("Currencies are the same, go to 'transfer funds' to transfer funds between " +
-                    "accounts of same currency");
-        } else if (from.equals (Currency.USD)) {
-            return data.get (to.name ());
-        } else if (to.equals (Currency.USD)) {
-            BigDecimal exchangeRate = data.get (from.name ());
-            return BigDecimal.ONE.divide (exchangeRate, 4, RoundingMode.HALF_UP);
-        } else if (from.equals (Currency.EUR)) {
-            // tova ozn, che "to" = BGN, shtoto ako beshe v dolari gorniq sluchai shteshe da go hvane
-            BigDecimal usdEURExchangeRate = data.get (Currency.EUR.name ());
-            BigDecimal usdBGNExchangeRate = data.get (Currency.BGN.name ());
-            return usdBGNExchangeRate.divide (usdEURExchangeRate, 4, RoundingMode.HALF_UP);
-        } else if (from.equals (Currency.BGN)) {
-            // tova ozn, che "to" = EUR, shtoto ako beshe v dolari vtoriq sluchai shteshe da go hvane
-            BigDecimal usdEURExchangeRate = data.get (Currency.EUR.name ());
-            BigDecimal usdBGNExchangeRate = data.get (Currency.BGN.name ());
-            return usdEURExchangeRate.divide (usdBGNExchangeRate, 4, RoundingMode.HALF_UP);
-        }
-        throw new Exception ("Accounts relationship not established");
+        if (isNull(data.get(from)) || isNull(data.get(to)))
+            throw new Exception("Accounts relationship not established");
+
+        if (from.equals(Currency.USD))
+            return data.get(to.name());
+
+        if (to.equals(Currency.USD))
+            return fromCurrencyToUSD(data.get(from.name()));
+
+        var fromWhateverToUSD = fromCurrencyToUSD(data.get(from.name()));
+        var fromUSDToWhatever = data.get(to.name());
+        return fromWhateverToUSD.multiply(fromUSDToWhatever);
     }
 
-
+    private static BigDecimal fromCurrencyToUSD(BigDecimal usdToCurrency) {
+        return ONE.divide(usdToCurrency, 4, HALF_UP);
+    }
 }
