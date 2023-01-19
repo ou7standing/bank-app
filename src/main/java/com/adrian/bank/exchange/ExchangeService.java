@@ -24,6 +24,7 @@ public class ExchangeService {
         this.restTemplate = new RestTemplateBuilder ().build ();
     }
 
+    // TODO: 1/18/2023 mojesh da go mahnesh toya metod veche
     public String getPostsPlainJSON() {
         String url = "https://api.freecurrencyapi.com/v1/latest?apikey=qqAnm7mqws7DWUvbeNAY4LXddS0XibxVKhWBM3fB";
 //        return this.restTemplate.getForObject (url, String.class);
@@ -68,7 +69,9 @@ public class ExchangeService {
 
     public CurrencyRateResponse getPostsPlainJSONWithMap() {
         String url = "https://api.freecurrencyapi.com/v1/latest?apikey=qqAnm7mqws7DWUvbeNAY4LXddS0XibxVKhWBM3fB";
+        // TODO: 1/18/2023 mahni commentara
 //        return this.restTemplate.getForObject (url, CurrencyRateResponse.class);
+        // TODO: 1/18/2023 nyama nujda ot this reference
         CurrencyRateResponse rates = this.restTemplate.getForObject (url, CurrencyRateResponse.class);
         log.info (rates);
         return rates;
