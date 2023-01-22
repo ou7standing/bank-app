@@ -40,16 +40,31 @@ accountID da e String, posle shte govorim za relation-i
 
     - add validations to parameters.
 
-    how to handle exceptions in Spring Boot.
+    ✓    how to handle exceptions in Spring Boot. (pochvame ot kriv deposit). (how to change the format of exception in spring boot)
+         how to add validations to parameters in Spring Boot
+
+
+
 
 
 5. Overall tasks
-    - clean all code from imports, whitespaces, lines that are not useful
+    ✓ - clean all code from imports, whitespaces, lines that are not useful // tva vkluchva li metodi, koito ne se polzvat
+    (a.k.a get/set metodi, nqkoi konstruktori)
+
+    ✓ - izchisti vsicki ostaveni komentari v koda
+
 
     - vij kakvo pravi @RestController("/accounts") vmesto samo @RestController (pesti pisane na url ako imash mn endpointi)
-
-    - izchisti vsicki ostaveni komentari v koda
 
     - razgledai kakvo prawi project lombok i zameni getterite i setterite v cyalata aplikacita
         - https://www.baeldung.com/intro-to-project-lombok
         - https://projectlombok.org/features/
+
+        GitBranching / GitIntroduction.
+
+        Razgledai Exchange Service promenite moq kod.
+
+
+6. Task to check with Yavor:
+exchangeCurrency metoda v TransactionService - pravi withdrawal, no ako sled tova ima greshka ne go vrushta
+

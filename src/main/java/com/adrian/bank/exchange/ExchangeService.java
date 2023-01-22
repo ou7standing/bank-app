@@ -1,6 +1,7 @@
 package com.adrian.bank.exchange;
 
 import com.adrian.bank.account.Currency;
+import com.adrian.bank.exception.SpringBootExc;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.stereotype.Service;
@@ -27,7 +28,6 @@ public class ExchangeService {
     // TODO: 1/18/2023 mojesh da go mahnesh toya metod veche
     public String getPostsPlainJSON() {
         String url = "https://api.freecurrencyapi.com/v1/latest?apikey=qqAnm7mqws7DWUvbeNAY4LXddS0XibxVKhWBM3fB";
-//        return this.restTemplate.getForObject (url, String.class);
         return " {\n" +
                 "  \"data\": {\n" +
                 "    \"AUD\": 1.486352,\n" +
@@ -69,23 +69,22 @@ public class ExchangeService {
 
     public CurrencyRateResponse getPostsPlainJSONWithMap() {
         String url = "https://api.freecurrencyapi.com/v1/latest?apikey=qqAnm7mqws7DWUvbeNAY4LXddS0XibxVKhWBM3fB";
-        // TODO: 1/18/2023 mahni commentara
-//        return this.restTemplate.getForObject (url, CurrencyRateResponse.class);
-        // TODO: 1/18/2023 nyama nujda ot this reference
-        CurrencyRateResponse rates = this.restTemplate.getForObject (url, CurrencyRateResponse.class);
+        CurrencyRateResponse rates = restTemplate.getForObject (url, CurrencyRateResponse.class);
         log.info (rates);
         return rates;
     }
 
-
-    public BigDecimal getRate(Currency from, Currency to) throws Exception {
+    //TODO 20 Jan - dava greshka "Accounts relationship not established", tree se opravi.
+    public BigDecimal getRate(Currency from, Currency to)  {
         Map<String, BigDecimal> data = getPostsPlainJSONWithMap().getData();
 
+        // beshe samo throw new Exception predi da go smenq na 20.Jan
         if (from.equals(to))
-            throw new Exception("Cannot exchange identical currencies, use /transactions/transfer");
+            throw new SpringBootExc ("Cannot exchange identical currencies, use /transactions/transfer");
 
+        // beshe samo throw new Exception predi da go smenq na 20.Jan
         if (isNull(data.get(from)) || isNull(data.get(to)))
-            throw new Exception("Accounts relationship not established");
+            throw new SpringBootExc ("Accounts relationship not established");
 
         if (from.equals(Currency.USD))
             return data.get(to.name());

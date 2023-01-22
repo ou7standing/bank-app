@@ -13,8 +13,7 @@ public class Transaction {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    // TODO: 1/18/2023 samo id da se kazva, nyamash nujda ot dopulnitelno shum v imet 
-    private long transID;
+    private long id;
 
     @Basic
     private java.sql.Timestamp dateTime;
@@ -58,77 +57,10 @@ public class Transaction {
         this.finalSum = sumRequest.multiply (exchangeRate);
     }
 
-    public long getTransID() {
-        return transID;
+    public long getId() {
+        return id;
     }
 
-    public void setTransID(long transID) {
-        this.transID = transID;
-    }
-
-    public Date getDateTime() {
-        return dateTime;
-    }
-
-    public void setDateTime(java.sql.Timestamp dateTime) {
-        this.dateTime = dateTime;
-    }
-
-    public long getAccountId() {
-        return accountId;
-    }
-
-    public void setAccountId(long accountId) {
-        this.accountId = accountId;
-    }
-
-    public TransactionType getType() {
-        return type;
-    }
-
-    public void setType(TransactionType type) {
-        this.type = type;
-    }
-
-    public Currency getFromCurrency() {
-        return fromCurrency;
-    }
-
-    public void setFromCurrency(Currency fromCurrency) {
-        this.fromCurrency = fromCurrency;
-    }
-
-    public Currency getToCurrency() {
-        return toCurrency;
-    }
-
-    public void setToCurrency(Currency toCurrency) {
-        this.toCurrency = toCurrency;
-    }
-
-    public BigDecimal getSumRequest() {
-        return sumRequest;
-    }
-
-    public void setSumRequest(BigDecimal sumRequest) {
-        this.sumRequest = sumRequest;
-    }
-
-    public BigDecimal getExchangeRate() {
-        return exchangeRate;
-    }
-
-    public void setExchangeRate(BigDecimal exchangeRate) {
-        this.exchangeRate = exchangeRate;
-    }
-
-    public BigDecimal getFinalSum() {
-        return finalSum;
-    }
-
-    public void setFinalSum(BigDecimal finalSum) {
-        this.finalSum = finalSum;
-    }
 
     public TransactionStatus getStatus() {
         return status;

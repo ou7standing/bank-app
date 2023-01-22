@@ -1,5 +1,7 @@
 package com.adrian.bank.account;
 
+import com.adrian.bank.exception.SpringBootExc;
+
 import javax.persistence.*;
 import java.math.BigDecimal;
 
@@ -7,7 +9,7 @@ import java.math.BigDecimal;
 public class Account {
     @Id
     @SequenceGenerator(name = "mysequence", initialValue = 7)
-    @GeneratedValue(strategy = GenerationType.AUTO, generator="mysequence")
+    @GeneratedValue(strategy = GenerationType.AUTO, generator = "mysequence")
     private long id;
 
     @Column
@@ -21,9 +23,9 @@ public class Account {
     public Account() {
     }
 
-    public void setOwnerName(String ownerName) throws Exception {
+    public void setOwnerName(String ownerName) {
         if (ownerName.equals (this.ownerName)) {
-            throw new Exception ("Owner name is already " + ownerName);
+            throw new SpringBootExc ("Owner name is already " + ownerName);
         }
         this.ownerName = ownerName;
     }
@@ -43,9 +45,6 @@ public class Account {
         return balance;
     }
 
-    public String getOwnerName() {
-        return ownerName;
-    }
 
     public long getId() {
         return id;
@@ -56,9 +55,9 @@ public class Account {
         return balance;
     }
 
-    public BigDecimal withdrawal(BigDecimal withdrawalSum) throws Exception {
-        if (withdrawalSum.compareTo (balance) == 1) {
-            throw new Exception ("No enough funds");
+    public BigDecimal withdrawal(BigDecimal withdrawalSum) {
+        if (withdrawalSum.compareTo (balance) > 0) {
+            throw new SpringBootExc ("No enough funds");
         }
         balance = balance.subtract (withdrawalSum);
         System.out.println (withdrawalSum + "has been deducted from the balance and the new balance is "

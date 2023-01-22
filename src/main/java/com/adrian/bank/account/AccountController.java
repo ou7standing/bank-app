@@ -1,11 +1,14 @@
 package com.adrian.bank.account;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.constraints.NotNull;
 import java.math.BigDecimal;
 
 @RestController
+@Validated
 public class AccountController {
 
     @Autowired
@@ -13,7 +16,7 @@ public class AccountController {
 
 
     @PostMapping("/account")
-    public Account makeAccount(String name, BigDecimal balance, Currency currency) {
+    public Account makeAccount(String name, @NotNull BigDecimal balance, Currency currency) {
         return accountService.createAccount (name, balance, currency);
     }
 
@@ -22,17 +25,20 @@ public class AccountController {
         return accountService.getBalance (id);
     }
 
-    //trea se izolira sluchaq v koito vkarvame 1 i sushto ime 
     @PutMapping("/account/change-details")
-    public Account changeDetails(long id, String newName) throws Exception {
+    public Account changeDetails(long id, String newName) {
         return accountService.changeDetails (id, newName);
     }
 
     @DeleteMapping("/account/delete")
-    public String deleteAccount(long id) throws Exception {
+    public String deleteAccount(long id) {
         return accountService.deleteAccount (id);
     }
 
-
+//    @GetMapping("/account/exceptions")
+//    public String throwException() {
+//        throw new CurrencyNotFound ("Pterodaktil");
+//    }
 
 }
+
