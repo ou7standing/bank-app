@@ -4,7 +4,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
-import javax.validation.constraints.NotNull;
 import java.math.BigDecimal;
 
 @RestController
@@ -16,12 +15,12 @@ public class AccountController {
 
 
     @PostMapping("/account")
-    public Account makeAccount(String name, @NotNull BigDecimal balance, Currency currency) {
+    public Account makeAccount(String name, BigDecimal balance, Currency currency) {
         return accountService.createAccount (name, balance, currency);
     }
 
     @GetMapping("/account/balance")
-    public BalanceResponse showBalance(long id) throws Exception {
+    public BalanceResponse showBalance(long id) {
         return accountService.getBalance (id);
     }
 
@@ -35,10 +34,6 @@ public class AccountController {
         return accountService.deleteAccount (id);
     }
 
-//    @GetMapping("/account/exceptions")
-//    public String throwException() {
-//        throw new CurrencyNotFound ("Pterodaktil");
-//    }
 
 }
 

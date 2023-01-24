@@ -1,27 +1,32 @@
 package com.adrian.bank.account;
 
 import com.adrian.bank.exception.SpringBootExc;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
 
 @Entity(name = "account")
+@Getter
+@NoArgsConstructor
 public class Account {
+
     @Id
     @SequenceGenerator(name = "mysequence", initialValue = 7)
     @GeneratedValue(strategy = GenerationType.AUTO, generator = "mysequence")
     private long id;
+
 
     @Column
     private BigDecimal balance;
 
     @Column
     private String ownerName;
+
     @Enumerated(EnumType.STRING)
     Currency currency;
 
-    public Account() {
-    }
 
     public void setOwnerName(String ownerName) {
         if (ownerName.equals (this.ownerName)) {
@@ -34,20 +39,6 @@ public class Account {
         this.balance = balance;
         this.ownerName = ownerName;
         this.currency = currency;
-    }
-
-    public Currency getCurrency() {
-        return currency;
-    }
-
-
-    public BigDecimal getBalance() {
-        return balance;
-    }
-
-
-    public long getId() {
-        return id;
     }
 
     public BigDecimal deposit(BigDecimal depositSum) {

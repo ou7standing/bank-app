@@ -6,16 +6,9 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
 @ControllerAdvice
+
 public class GlobalExceptionHandler {
 
-
-//    @ExceptionHandler(value = KeyNotBigDecimal.class)
-//    public ResponseEntity<Object> handleAPIExceptionBigDec(KeyNotBigDecimal exception) {
-//        return new ResponseEntity<> (" balance is not a BigDecimal, please select a number value. ",
-//                HttpStatus.NOT_FOUND);
-//    }
-
-    //vinagi li e ok da e "Not found" tuka?
     @ExceptionHandler
     public ResponseEntity<ErrorMessage> handleAccNotFoundExc(EntityNotFoundExc exc) {
 
@@ -39,8 +32,13 @@ public class GlobalExceptionHandler {
 
     }
 
-
 }
+
+
+
+
+
+
 
 
 

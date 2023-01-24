@@ -57,8 +57,8 @@ accountID da e String, posle shte govorim za relation-i
     - vij kakvo pravi @RestController("/accounts") vmesto samo @RestController (pesti pisane na url ako imash mn endpointi)
 
     - razgledai kakvo prawi project lombok i zameni getterite i setterite v cyalata aplikacita
-        - https://www.baeldung.com/intro-to-project-lombok
-        - https://projectlombok.org/features/
+     ✓    - https://www.baeldung.com/intro-to-project-lombok
+     ✓    - https://projectlombok.org/features/
 
         GitBranching / GitIntroduction.
 

@@ -1,13 +1,18 @@
 package com.adrian.bank.transactions;
 
 import com.adrian.bank.account.Currency;
+import lombok.AccessLevel;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
-import java.util.Date;
 
+@NoArgsConstructor
+@Getter
 @Entity(name = "transaction")
 public class Transaction {
 
@@ -39,12 +44,10 @@ public class Transaction {
     @Column
     private BigDecimal finalSum;
 
+    @Setter(AccessLevel.PACKAGE)
     @Enumerated(EnumType.STRING)
     private TransactionStatus status;
 
-
-    public Transaction() {
-    }
 
     public Transaction(long accountId, TransactionType type, Currency fromCurrency, Currency toCurrency, BigDecimal sumRequest, BigDecimal exchangeRate) {
         this.accountId = accountId;
@@ -57,18 +60,6 @@ public class Transaction {
         this.finalSum = sumRequest.multiply (exchangeRate);
     }
 
-    public long getId() {
-        return id;
-    }
-
-
-    public TransactionStatus getStatus() {
-        return status;
-    }
-
-    public void setStatus(TransactionStatus status) {
-        this.status = status;
-    }
 }
 
 

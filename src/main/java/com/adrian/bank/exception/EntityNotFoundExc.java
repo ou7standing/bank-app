@@ -1,5 +1,8 @@
 package com.adrian.bank.exception;
 
+import lombok.NoArgsConstructor;
+
+@NoArgsConstructor
 public class EntityNotFoundExc extends RuntimeException {
 
 
@@ -7,6 +10,4 @@ public class EntityNotFoundExc extends RuntimeException {
         super (message);
     }
 
-    public EntityNotFoundExc() {
-    }
 }
