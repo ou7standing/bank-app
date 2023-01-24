@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.*;
 import java.math.BigDecimal;
 
 @RestController
+@RequestMapping("/account")
 @Validated
 public class AccountController {
 
@@ -14,22 +15,22 @@ public class AccountController {
     private AccountService accountService;
 
 
-    @PostMapping("/account")
+    @PostMapping
     public Account makeAccount(String name, BigDecimal balance, Currency currency) {
         return accountService.createAccount (name, balance, currency);
     }
 
-    @GetMapping("/account/balance")
+    @GetMapping("/balance")
     public BalanceResponse showBalance(long id) {
         return accountService.getBalance (id);
     }
 
-    @PutMapping("/account/change-details")
+    @PutMapping("/change-details")
     public Account changeDetails(long id, String newName) {
         return accountService.changeDetails (id, newName);
     }
 
-    @DeleteMapping("/account/delete")
+    @DeleteMapping("/delete")
     public String deleteAccount(long id) {
         return accountService.deleteAccount (id);
     }

@@ -60,9 +60,9 @@ accountID da e String, posle shte govorim za relation-i
      ✓    - https://www.baeldung.com/intro-to-project-lombok
      ✓    - https://projectlombok.org/features/
 
-        GitBranching / GitIntroduction.
+     ✓  GitBranching / GitIntroduction.
 
-        Razgledai Exchange Service promenite moq kod.
+     ✓  Razgledai Exchange Service promenite moq kod.
 
 
 6. Task to check with Yavor:
