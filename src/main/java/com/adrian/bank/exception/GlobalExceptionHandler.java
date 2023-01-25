@@ -20,6 +20,7 @@ public class GlobalExceptionHandler {
 
     }
 
+
     @ExceptionHandler
     public ResponseEntity<ErrorMessage> handleRandomException(SpringBootExc exc) {
 
@@ -30,4 +31,14 @@ public class GlobalExceptionHandler {
         return new ResponseEntity<> (message, HttpStatus.BAD_REQUEST);
 
     }
+
 }
+
+
+
+
+
+
+
+
+

@@ -13,8 +13,8 @@ import java.math.BigDecimal;
 public class Account {
 
     @Id
-    @SequenceGenerator(name = "mySequence", initialValue = 7)
-    @GeneratedValue(strategy = GenerationType.AUTO, generator = "mySequence")
+    @SequenceGenerator(name = "mysequence", initialValue = 7)
+    @GeneratedValue(strategy = GenerationType.AUTO, generator = "mysequence")
     private long id;
 
 
@@ -26,6 +26,7 @@ public class Account {
 
     @Enumerated(EnumType.STRING)
     Currency currency;
+
 
     public void setOwnerName(String ownerName) {
         if (ownerName.equals (this.ownerName)) {
@@ -40,9 +41,20 @@ public class Account {
         this.currency = currency;
     }
 
-    public void setOwnerName(String ownerName) {
-        if (ownerName.equals (this.ownerName))
-            throw new SpringBootExc ("Owner name is already " + ownerName);
-        this.ownerName = ownerName;
+    public BigDecimal deposit(BigDecimal depositSum) {
+        balance = balance.add (depositSum);
+        return balance;
     }
+
+    public BigDecimal withdrawal(BigDecimal withdrawalSum) {
+        if (withdrawalSum.compareTo (balance) > 0) {
+            throw new SpringBootExc ("No enough funds");
+        }
+        balance = balance.subtract (withdrawalSum);
+        System.out.println (withdrawalSum + "has been deducted from the balance and the new balance is "
+                + balance);
+        return balance;
+    }
+
+
 }
