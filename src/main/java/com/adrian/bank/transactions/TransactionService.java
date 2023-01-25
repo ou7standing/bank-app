@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 
+
 @Service
 @Log4j2
 public class TransactionService {
@@ -35,9 +36,10 @@ public class TransactionService {
         return transaction;
     }
 
+
     public BalanceResponse deposit(long id, BigDecimal depositAmount) {
         Account account = accountService.findAccount (id);
-        account.setBalance (account.getBalance ().add (depositAmount));
+        account.deposit (depositAmount);
         accountService.accountRepository.save (account);
 
         createTransaction (id, TransactionType.DEPOSIT, account.getCurrency (), account.getCurrency (),
@@ -46,11 +48,10 @@ public class TransactionService {
         return new BalanceResponse (account.getBalance (), account.getCurrency ());
     }
 
+
     public BalanceResponse withdrawal(long id, BigDecimal withdrawalAmount) {
         Account account = accountService.findAccount (id);
-        if (withdrawalAmount.compareTo (account.getBalance ()) > 0)
-            throw new SpringBootExc ("No enough funds.");
-        account.setBalance (account.getBalance ().subtract (withdrawalAmount));
+        account.withdrawal (withdrawalAmount);
         accountService.accountRepository.save (account);
 
         createTransaction (id, TransactionType.WITHDRAWAL, account.getCurrency (), account.getCurrency (),
@@ -76,6 +77,7 @@ public class TransactionService {
         }
     }
 
+
     public BalanceResponse exchangeCurrency(BigDecimal amount, long fromAccount, long toAccount) {
 
         Account giveTo = accountService.findAccount (toAccount);
@@ -95,13 +97,14 @@ public class TransactionService {
 
         deposit (toAccount, depositAmount);
 
-        Transaction transaction = createTransaction (fromAccount, TransactionType.EXCHANGE, takeFrom.getCurrency (), giveTo.getCurrency (), amount, rate);
+        Transaction transaction = createTransaction (fromAccount, TransactionType.EXCHANGE_CURRENCY, takeFrom.getCurrency (), giveTo.getCurrency (), amount, rate);
         long transID = transaction.getId ();
 
         transactionRepository.deleteById (transID - 2);
         transactionRepository.deleteById (transID - 1);
 
         return new BalanceResponse (giveTo.getBalance (), giveTo.getCurrency ());
+
     }
 
     public Transaction checkTransaction(long id) {
@@ -112,4 +115,6 @@ public class TransactionService {
     public TransactionStatus checkStatus(long id) {
         return checkTransaction (id).getStatus ();
     }
+
 }
+
