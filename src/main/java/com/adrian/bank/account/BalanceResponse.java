@@ -5,7 +5,6 @@ import java.math.BigDecimal;
 
 @AllArgsConstructor
 public class BalanceResponse {
-
     public BigDecimal balance;
     public Currency currency;
 }

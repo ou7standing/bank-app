@@ -68,3 +68,11 @@ accountID da e String, posle shte govorim za relation-i
 6. Task to check with Yavor:
 exchangeCurrency metoda v TransactionService - pravi withdrawal, no ako sled tova ima greshka ne go vrushta
 
+Current tasks:
+ 1st
+checkout branch from main i pravish promenite za 4istene na coda, posle pushvash i pravish pull request az go gledam i komentirame,
+vse edno si na code review; zvunkash vednaga
+- clean all code from imports, whitespaces, lines that are not useful
+
+ 2nd
+- add validations to parameters.

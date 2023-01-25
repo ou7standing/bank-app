@@ -17,7 +17,6 @@ public class AccountService {
     @Autowired
     public TransactionService transService;
 
-
     public Account createAccount(String name, BigDecimal balance, Currency currency) {
         Account newAccount = new Account (balance, name, currency);
         accountRepository.save (newAccount);
@@ -28,18 +27,15 @@ public class AccountService {
         return newAccount;
     }
 
-
     public BalanceResponse getBalance(long id) {
         Account account = findAccount (id);
         return new BalanceResponse (account.getBalance (), account.getCurrency ());
     }
 
-
     public Account findAccount(long id) {
         return accountRepository.findById (id).orElseThrow (() -> new EntityNotFoundExc ("Account " + id +
                 " not found."));
     }
-
 
     public Account changeDetails(long id, String newName) {
         Account account = findAccount (id);
