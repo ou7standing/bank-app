@@ -1,7 +1,6 @@
 package com.adrian.bank.transactions;
 
 import com.adrian.bank.account.Currency;
-import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -44,10 +43,9 @@ public class Transaction {
     @Column
     private BigDecimal finalSum;
 
-    @Setter(AccessLevel.PACKAGE)
+    @Setter
     @Enumerated(EnumType.STRING)
     private TransactionStatus status;
-
 
     public Transaction(long accountId, TransactionType type, Currency fromCurrency, Currency toCurrency, BigDecimal sumRequest, BigDecimal exchangeRate) {
         this.accountId = accountId;
@@ -59,10 +57,4 @@ public class Transaction {
         this.exchangeRate = exchangeRate;
         this.finalSum = sumRequest.multiply (exchangeRate);
     }
-
 }
-
-
-
-
-
