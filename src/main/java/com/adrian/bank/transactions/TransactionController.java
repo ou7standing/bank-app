@@ -11,12 +11,10 @@ import java.math.BigDecimal;
 
 @RestController
 @RequestMapping("/transactions")
-
 public class TransactionController {
 
     @Autowired
     private TransactionService transactionService;
-
 
     @PostMapping("/deposit")
     public BalanceResponse deposit(long id, BigDecimal depositSum) {
@@ -33,7 +31,6 @@ public class TransactionController {
         return transactionService.transferFunds (idFromAcc, idToAcc, transferSum);
     }
 
-
     @PostMapping("/exchange")
     public BalanceResponse exchangeCurrency(BigDecimal amount, long fromAccount, long toAccount) {
         return transactionService.exchangeCurrency (amount, fromAccount, toAccount);
@@ -44,11 +41,8 @@ public class TransactionController {
         return transactionService.checkTransaction (transID);
     }
 
-
     @PostMapping("/check-status")
     public TransactionStatus checkTransStatus(long transactionID) {
         return transactionService.checkStatus (transactionID);
     }
-
-
 }

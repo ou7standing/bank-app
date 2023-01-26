@@ -8,6 +8,4 @@ public class SpringBootExc extends RuntimeException{
     public SpringBootExc(String message) {
         super (message);
     }
-
-
 }

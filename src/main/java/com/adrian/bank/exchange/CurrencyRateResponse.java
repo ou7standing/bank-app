@@ -9,6 +9,4 @@ import java.util.Map;
 public class CurrencyRateResponse {
 
     Map<String, BigDecimal> data;
-
-
 }
