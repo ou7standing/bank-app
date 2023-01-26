@@ -28,15 +28,15 @@ public class Account {
     @Enumerated(EnumType.STRING)
     Currency currency;
 
-    public void setOwnerName(String ownerName) {
-        if (ownerName.equals (this.ownerName))
-            throw new SpringBootExc ("Owner name is already " + ownerName);
-        this.ownerName = ownerName;
-    }
-
     public Account(BigDecimal balance, String ownerName, Currency currency) {
         this.balance = balance;
         this.ownerName = ownerName;
         this.currency = currency;
+    }
+
+    public void setOwnerName(String ownerName) {
+        if (ownerName.equals (this.ownerName))
+            throw new SpringBootExc ("Owner name is already " + ownerName);
+        this.ownerName = ownerName;
     }
 }
