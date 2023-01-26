@@ -17,9 +17,7 @@ public class GlobalExceptionHandler {
                 exc.getMessage ());
 
         return new ResponseEntity<> (message, HttpStatus.NOT_FOUND);
-
     }
-
 
     @ExceptionHandler
     public ResponseEntity<ErrorMessage> handleRandomException(SpringBootExc exc) {
@@ -29,16 +27,5 @@ public class GlobalExceptionHandler {
                 exc.getMessage ());
 
         return new ResponseEntity<> (message, HttpStatus.BAD_REQUEST);
-
     }
-
 }
-
-
-
-
-
-
-
-
-

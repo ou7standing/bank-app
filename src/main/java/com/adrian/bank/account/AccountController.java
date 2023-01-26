@@ -1,19 +1,16 @@
 package com.adrian.bank.account;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.math.BigDecimal;
 
 @RestController
 @RequestMapping("/account")
-@Validated
 public class AccountController {
 
     @Autowired
     private AccountService accountService;
-
 
     @PostMapping
     public Account makeAccount(String name, BigDecimal balance, Currency currency) {
@@ -34,7 +31,4 @@ public class AccountController {
     public String deleteAccount(long id) {
         return accountService.deleteAccount (id);
     }
-
-
 }
-

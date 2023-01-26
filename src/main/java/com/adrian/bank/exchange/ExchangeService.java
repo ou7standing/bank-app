@@ -20,11 +20,9 @@ import static java.util.Objects.isNull;
 public class ExchangeService {
     private final RestTemplate restTemplate;
 
-
     public ExchangeService() {
         this.restTemplate = new RestTemplateBuilder ().build ();
     }
-
 
     public CurrencyRateResponse getPostsPlainJSONWithMap() {
         String url = "https://api.freecurrencyapi.com/v1/latest?apikey=qqAnm7mqws7DWUvbeNAY4LXddS0XibxVKhWBM3fB";
