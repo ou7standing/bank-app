@@ -5,6 +5,7 @@ import org.springframework.validation.FieldError;
 import java.util.ArrayList;
 import java.util.List;
 
+// TODO: 2/1/2023 Zakakvo ti e toya klas 
 class Error {
     private final int status;
     private final String message;

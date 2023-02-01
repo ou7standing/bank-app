@@ -6,7 +6,8 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 
-@Validated
+// TODO: 2/1/2023 tova ne ti tryabwa
+//@Validated
 @RestController
 @RequestMapping("/account")
 public class AccountController {

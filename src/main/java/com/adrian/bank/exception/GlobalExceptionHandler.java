@@ -52,7 +52,7 @@ public class GlobalExceptionHandler {
         Map<String, Object> responseBody = new LinkedHashMap<> ();
 
         responseBody.put ("status", BAD_REQUEST.value ());
-
+// TODO: 2/1/2023 tuka se seshtam samo da mahnem manually duplicated msgs; inache ne otkrih zakakwo taka stava i ne e rentabilno da zadulbavam pove4e 
         List<FieldError> fieldErrors = ex.getBindingResult ().getFieldErrors ();
 
         List<String> listErrors = new ArrayList<> ();
