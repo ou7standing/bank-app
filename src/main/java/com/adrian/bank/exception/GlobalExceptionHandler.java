@@ -7,10 +7,7 @@ import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
-import java.util.ArrayList;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import static org.springframework.http.HttpStatus.BAD_REQUEST;
 
@@ -38,21 +35,11 @@ public class GlobalExceptionHandler {
     }
 
     @ExceptionHandler
-    public ErrorMessage handleNumberFormatExc(java.lang.NumberFormatException ex) {
-
-        ErrorMessage message = new ErrorMessage (
-                BAD_REQUEST.value (),
-                "EPM");
-        return message;
-    }
-
-
-    @ExceptionHandler
     public ResponseEntity<Object> handleMethodArgNotValid(BindException ex) {
         Map<String, Object> responseBody = new LinkedHashMap<> ();
 
         responseBody.put ("status", BAD_REQUEST.value ());
-// TODO: 2/1/2023 tuka se seshtam samo da mahnem manually duplicated msgs; inache ne otkrih zakakwo taka stava i ne e rentabilno da zadulbavam pove4e 
+
         List<FieldError> fieldErrors = ex.getBindingResult ().getFieldErrors ();
 
         List<String> listErrors = new ArrayList<> ();
@@ -61,6 +48,10 @@ public class GlobalExceptionHandler {
             String errorMessage = fieldError.getDefaultMessage ();
             listErrors.add (errorMessage);
         }
+
+        Set<String> set = new LinkedHashSet<> (listErrors);
+        listErrors.clear ();
+        listErrors.addAll (set);
         responseBody.put ("errors", listErrors);
         return new ResponseEntity<> (responseBody, HttpStatus.BAD_REQUEST);
     }
@@ -70,7 +61,14 @@ public class GlobalExceptionHandler {
         ErrorMessage e = new ErrorMessage (
                 BAD_REQUEST.value (),
                 ex.getLocalizedMessage ());
-
         return e;
+    }
+
+    @ExceptionHandler
+    public ErrorMessage handleNumberFormatExc(java.lang.NumberFormatException ex) {
+        ErrorMessage message = new ErrorMessage (
+                BAD_REQUEST.value (),
+                "improper number format");
+        return message;
     }
 }

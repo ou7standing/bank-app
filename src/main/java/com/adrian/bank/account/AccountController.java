@@ -1,13 +1,9 @@
 package com.adrian.bank.account;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
-
 import javax.validation.Valid;
 
-// TODO: 2/1/2023 tova ne ti tryabwa
-//@Validated
 @RestController
 @RequestMapping("/account")
 public class AccountController {
@@ -18,7 +14,7 @@ public class AccountController {
     @PostMapping
     public Account makeAccount(@Valid UserRequest userRequest) {
         return accountService.createAccount (userRequest.getName (), userRequest.getBalance (),
-                userRequest.getCurrency ());
+                Currency.valueOf (userRequest.getCurrency ().toUpperCase ()));
     }
 
     @GetMapping("/balance")
