@@ -2,8 +2,7 @@ package com.adrian.bank.account;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-
-import java.math.BigDecimal;
+import javax.validation.Valid;
 
 @RestController
 @RequestMapping("/account")
@@ -13,8 +12,9 @@ public class AccountController {
     private AccountService accountService;
 
     @PostMapping
-    public Account makeAccount(String name, BigDecimal balance, Currency currency) {
-        return accountService.createAccount (name, balance, currency);
+    public Account makeAccount(@Valid UserRequest userRequest) {
+        return accountService.createAccount (userRequest.getName (), userRequest.getBalance (),
+                Currency.valueOf (userRequest.getCurrency ().toUpperCase ()));
     }
 
     @GetMapping("/balance")
