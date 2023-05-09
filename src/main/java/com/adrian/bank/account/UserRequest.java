@@ -15,7 +15,7 @@ public class UserRequest {
     @NotNull(message = "'balance' must not be null / blank")
     private BigDecimal balance;
 
-    @Pattern (regexp = "[a-zA-Z ]+", message = "'name' must contain only characters and spaces")
+    @Pattern(regexp = "[a-zA-Z ]+", message = "'name' must contain only characters and spaces")
     @NotBlank(message = "'name' must not be blank")
     private String name;
 
